@@ -24,7 +24,7 @@
     // Variables de conexión
     $servername = "localhost";
     $username = "root"; // Cambia este usuario por uno con contraseña en producción
-    $password = "a_safe_password"; // Asigna una contraseña segura
+    $password = $_ENV["SECRET"]
     $db = "1ccb8097d0e9ce9f154608be60224c7c";
 
     // Crear conexión
