@@ -18,23 +18,24 @@
       <a href=lvl4.php?file=2.php><button>The Other Button!</button></a>
       </div>
       
-      <?php     
+      <?php
         echo "</br></br>";
-
-        if (isset( $_GET[ 'file' ])) 
+        
+        if (isset( $_GET[ 'file' ]))        
         {
-          $secure4 = $_GET[ 'file' ];
-         
-            if ($secure4!="1.php" && $secure4!="2.php") 
-            {
-              $secure4=substr($secure4, 0,-4);
-            }
-            
-            if (isset($secure4)) 
-            {        
-              include($secure4);              
-            }
-        }              
+          $INCLUDE_ALLOW_LIST = [
+             "home.php",
+             "dashboard.php",
+             "profile.php",
+             "settings.php"
+         ];
+         $filename = $_GET["file"];
+         if (in_array($filename, $INCLUDE_ALLOW_LIST)) {
+           include $filename;
+         } else {
+            echo "<div align='center'><b><h5>Archivo no permitido</h5></b></div>";
+           }
+        }
       ?>
    </body>
 </html>
