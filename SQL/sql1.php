@@ -21,36 +21,46 @@
 
 
 <?php 
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$db = "1ccb8097d0e9ce9f154608be60224c7c";
+    // Variables de conexión
+    $servername = "localhost";
+    $username = "root"; // Cambia este usuario por uno con contraseña en producción
+    $password = "a_safe_password"; // Asigna una contraseña segura
+    $db = "1ccb8097d0e9ce9f154608be60224c7c";
 
-	// Create connection
-	$conn = mysqli_connect($servername,$username,$password,$db);
+    // Crear conexión
+    $conn = mysqli_connect($servername, $username, $password, $db);
 
-	// Check connection
-	if (!$conn) {
-    	die("Connection failed: " . mysqli_connect_error());
-	} 
-	//echo "Connected successfully";
-	
-	if(isset($_POST["submit"])){
-		$firstname = $_POST["firstname"];
-		$sql = "SELECT lastname FROM users WHERE firstname='$firstname'";//String
-		$result = mysqli_query($conn,$sql);
-		
-		if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-    		while($row = mysqli_fetch_assoc($result)) {
-       			echo $row["lastname"];
-       			echo "<br>";
-    		}
-		} else {
-    		echo "0 results";
-		}
-	}
-	
- ?>
+    // Verificar conexión
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    // Preparar la consulta para evitar inyección SQL
+    if(isset($_POST["submit"])){
+        $firstname = $_POST["firstname"];
+
+        // Uso de consultas preparadas para evitar inyecciones SQL
+        $stmt = $conn->prepare("SELECT lastname FROM users WHERE firstname = ?");
+        $stmt->bind_param("s", $firstname);  // 's' indica que es un string
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Verificar si se obtienen resultados
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo $row["lastname"];
+                echo "<br>";
+            }
+        } else {
+            echo "0 results";
+        }
+
+        // Cerrar la declaración
+        $stmt->close();
+    }
+
+    // Cerrar la conexión
+    mysqli_close($conn);
+?>
 </body>
 </html>
