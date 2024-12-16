@@ -20,12 +20,19 @@
 <?php
 
 // Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
-	$target_dir = "uploads/";
-	$target_file = $target_dir . basename($_FILES["file"]["name"]);
-	
-    move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
-    echo "File uploaded /uploads/".$_FILES["file"]["name"];
+if (isset($_POST["submit"])) {
+    $target_dir = "uploads/";
+
+    $file_name = basename($_FILES["file"]["name"]);
+    $file_name = preg_replace("/[^a-zA-Z0-9.-]/", "_", $file_name); // Solo permite letras, números, puntos y guiones
+
+    $target_file = $target_dir . $file_name;
+
+    if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+        echo "File uploaded successfully!";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
 }
 ?>
 </body>
