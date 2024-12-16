@@ -25,7 +25,7 @@
 <?php
 	$servername = "localhost";
 	$username = "root";
-	$password = $_ENV["SECRET"];
+	$password = $_ENV["SECRET"]
 	$db = "1ccb8097d0e9ce9f154608be60224c7c";
 
 	// Create connection
