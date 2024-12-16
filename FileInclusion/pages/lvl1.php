@@ -22,8 +22,18 @@
         
         if (isset( $_GET[ 'file' ]))        
         {
-          @include($_GET[ 'file' ]);
-          echo"<div align='center'><b><h5>".$_GET[ 'file' ]."</h5></b></div> ";       
+          $INCLUDE_ALLOW_LIST = [
+             "home.php",
+             "dashboard.php",
+             "profile.php",
+             "settings.php"
+         ];
+         $filename = $_GET["file"];
+         if (in_array($filename, $INCLUDE_ALLOW_LIST)) {
+           include $filename;
+         } else {
+            echo "<div align='center'><b><h5>Archivo no permitido</h5></b></div>";
+           }
         }
       ?>
    </body>
