@@ -18,9 +18,9 @@
     </div>
 
 <?php 
-if (isset($_GET["username"])) {
-    $user = str_replace("<", "", $_GET["username"]);
-    echo "Your name is "."$user";
+if(isset($_GET["username"])) {
+    $username = htmlspecialchars($_GET["username"], ENT_QUOTES, 'UTF-8');
+    echo "Your name is " . $username;
 }
  ?>
 
